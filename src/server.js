@@ -2,6 +2,7 @@ const app = require('./app')
 const Sequelize = require('sequelize')
 const finale = require('finale-rest')
 const authentication = require('./middleware/okta-auth')
+const sanitizer = require('./middleware/html-sanitizer')
 const { PORT } = require('./config')
 
 // Configure DB and add blogpost model
@@ -24,7 +25,7 @@ const blogpostsResource = finale.resource({
 
 // hooks authentication middleware to a promise object
 const authenticationPromise = (req, res, context) => {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
         authentication(req, res, function (arg) {
             if (arg) {
                 res.status(401).send({message: "Unauthorized"})
@@ -37,17 +38,12 @@ const authenticationPromise = (req, res, context) => {
 };
 
 // setup auth for POST/DELETE/PUT endpoints
-blogpostsResource.create.auth(function(req, res, context) {
-   return authenticationPromise(req, res, context)
-})
+blogpostsResource.create.auth((req, res, context) => authenticationPromise(req, res, context))
+blogpostsResource.delete.auth((req, res, context) => authenticationPromise(req, res, context))
+blogpostsResource.update.auth((req, res, context) => authenticationPromise(req, res, context))
 
-blogpostsResource.delete.auth(function(req, res, context) {
-    return authenticationPromise(req, res, context)
-})
-
-blogpostsResource.update.auth(function(req, res, context) {
-    return authenticationPromise(req, res, context)
-})
+// sanitization of html from client prior to storage in DB
+blogpostsResource.create.write.before((req, res, context) => sanitizer(req, res, context))
 
 database
     .sync({ force: false })
