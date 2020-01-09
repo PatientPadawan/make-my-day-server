@@ -1,7 +1,12 @@
 const OktaJwtVerifier = require('@okta/jwt-verifier')
+const { ISSUER, CLIENT_ID } = require('../config')
 
 const oktaJwtVerifier = new OktaJwtVerifier({
-  issuer: 'https://dev-894372.okta.com/oauth2/default'
+  issuer: ISSUER,
+  clientId: CLIENT_ID,
+  assertClaims: {
+    aud: 'api://default',
+  },
 });
 
 function authenticationRequired(req, res, next) {
@@ -14,8 +19,9 @@ function authenticationRequired(req, res, next) {
   }
 
   const accessToken = match[1];
+  const expectedAudience = 'api://default';
 
-  return oktaJwtVerifier.verifyAccessToken(accessToken)
+  return oktaJwtVerifier.verifyAccessToken(accessToken, expectedAudience)
     .then((jwt) => {
       req.jwt = jwt;
       next();

@@ -5,7 +5,6 @@ const cors = require('cors')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const { NODE_ENV } = require('./config')
-const { CLIENT_ORIGIN } = require('./config') // CONFIG ORIGIN
 
 const app = express()
 
