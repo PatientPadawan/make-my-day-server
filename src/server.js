@@ -37,7 +37,7 @@ const authenticationPromise = (req, res, context) => {
     })
 };
 
-// setup auth for POST/DELETE/PUT endpoints
+// attach auth middleware for blogpost POST/DELETE/PUT endpoints
 blogpostsResource.create.auth((req, res, context) => authenticationPromise(req, res, context))
 blogpostsResource.delete.auth((req, res, context) => authenticationPromise(req, res, context))
 blogpostsResource.update.auth((req, res, context) => authenticationPromise(req, res, context))

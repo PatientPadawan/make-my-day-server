@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
+const contactRouter = require('./contact/contactRouter')
 const { NODE_ENV } = require('./config')
 
 const app = express()
@@ -17,6 +18,7 @@ app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use('/api/contact', contactRouter)
 app.use(function errorHandler(error, req, res, next) {
     let response
     if (NODE_ENV === 'production') {
