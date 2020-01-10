@@ -5,5 +5,8 @@ module.exports = {
     CLIENT_ID: process.env.CLIENT_ID,
     ISSUER: process.env.ISSUER,
     EMAIL_USER: process.env.EMAIL_USER || 'YOUR_EMAIL_ADDRESS', 
-    EMAIL_PASS: process.env.EMAIL_PASS || 'PASSWORD_FOR_EMAIL'
+    EMAIL_PASS: process.env.EMAIL_PASS || 'PASSWORD_FOR_EMAIL',
+    DATABASE_URL: process.env.DATABASE_URL,
+    DATABASE_USER: process.env.DATABASE_USER,
+    DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
 }

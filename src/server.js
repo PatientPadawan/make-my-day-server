@@ -3,10 +3,12 @@ const Sequelize = require('sequelize')
 const finale = require('finale-rest')
 const authentication = require('./middleware/okta-auth')
 const sanitizer = require('./middleware/html-sanitizer')
-const { PORT } = require('./config')
+const { PORT, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = require('./config')
+
+
 
 // Configure DB and add blogpost model
-const database = new Sequelize('mmdeblogdb', 'AlexBraden', '', { dialect: 'postgres' });
+const database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres' });
 const blogposts = database.define('blogposts', {
     content: Sequelize.TEXT,
     published: Sequelize.BOOLEAN,
