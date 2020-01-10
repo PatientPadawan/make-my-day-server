@@ -3,12 +3,23 @@ const Sequelize = require('sequelize')
 const finale = require('finale-rest')
 const authentication = require('./middleware/okta-auth')
 const sanitizer = require('./middleware/html-sanitizer')
-const { PORT, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = require('./config')
+const { NODE_ENV, PORT, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = require('./config')
 
 
 
 // Configure DB and add blogpost model
-const database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres' });
+if (NODE_ENV === 'production') {
+    const database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { 
+        dialect: 'postgres',
+        protocol: 'postgres',
+        port: match[4],
+        host: match[3],
+        logging: true,
+    });
+} else {
+    const database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres' });
+}
+
 const blogposts = database.define('blogposts', {
     content: Sequelize.TEXT,
     published: Sequelize.BOOLEAN,
