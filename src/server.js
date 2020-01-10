@@ -9,7 +9,8 @@ const { NODE_ENV, PORT, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = requi
 
 // Configure DB and add blogpost model
 if (NODE_ENV === 'production') {
-    const database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { 
+    var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
+    const database = new Sequelize(match[5], match[1], match[2], { 
         dialect: 'postgres',
         protocol: 'postgres',
         port: match[4],
