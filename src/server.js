@@ -8,17 +8,21 @@ const { NODE_ENV, PORT, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = requi
 
 
 // Configure DB and add blogpost model
+let database = null;
 if (NODE_ENV === 'production') {
-    var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
-    const database = new Sequelize(match[5], match[1], match[2], { 
+    var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+    database = new Sequelize(match[5], match[1], match[2], { 
         dialect: 'postgres',
         protocol: 'postgres',
         port: match[4],
         host: match[3],
         logging: true,
+        dialectOptions: {
+            ssl: true
+        },
     });
 } else {
-    const database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres' });
+    database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres' });
 }
 
 const blogposts = database.define('blogposts', {
