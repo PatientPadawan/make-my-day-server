@@ -5,7 +5,6 @@ const { EMAIL_USER, EMAIL_CLIENT_ID, EMAIL_CLIENT_SECRET, EMAIL_CLIENT_REFRESH_T
 
 const contactRouter = express.Router()
 const OAuth2 = google.auth.OAuth2;
-
 const oauth2Client = new OAuth2(
   EMAIL_CLIENT_ID,
   EMAIL_CLIENT_SECRET,
@@ -15,7 +14,6 @@ const oauth2Client = new OAuth2(
 oauth2Client.setCredentials({
   refresh_token: EMAIL_CLIENT_REFRESH_TOKEN
 });
-
 const accessToken = oauth2Client.getAccessToken()
 
 const smtpTransport = nodemailer.createTransport({
