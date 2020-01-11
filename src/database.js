@@ -5,10 +5,11 @@ const authentication = require('./middleware/okta-auth');
 const sanitizer = require('./middleware/html-sanitizer');
 const { NODE_ENV, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = require('./config');
 
-let database = null;
+let database
 
 // in production environment DATABASE_URL is an env-var provided by host service
 // in local environment it must be set to an env-var equal to the database name
+
 if (NODE_ENV == 'production') {
     let match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
     database = new Sequelize(match[5], match[1], match[2], { 
