@@ -64,7 +64,7 @@ blogpostsResource.update.auth((req, res, context) => authenticationPromise(req, 
 blogpostsResource.create.write.before((req, res, context) => sanitizer(req, res, context))
 
 database
-    .sync({ force: false })
+    .sync({ force: true })
     .then(function() {
         app.listen(PORT, () => {
             console.log(`Server listening at http://localhost:${PORT}`)

@@ -1,0 +1,3 @@
+TRUNCATE
+    blogposts
+RESTART IDENTITY CASCADE;
