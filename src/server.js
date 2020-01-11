@@ -1,3 +1,4 @@
+require('dotenv').config() // RECENT CHANGE
 const database = require('./database');
 const app = require('./app');
 const { PORT } = require('./config');

@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -8,7 +7,6 @@ const contactRouter = require('./contact/contactRouter')
 const { NODE_ENV } = require('./config')
 
 const app = express()
-
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'dev';
 
 app.use(morgan(morganOption))
