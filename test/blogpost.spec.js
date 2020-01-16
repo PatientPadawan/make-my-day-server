@@ -14,16 +14,16 @@ describe('Blogposts endpoints', () => {
 
   it(`GET /blogpost/blogpost_id responds with blogpost object`, () => {
     return supertest(app)
-      .get('/api/blogpost/1')
+      .get('/api/blogpost/2')
       .expect(200)
       .expect(res => {
         expect(res.body).to.be.an('object')
-        expect(res.body).to.have.property('id' && 'content' && 'createdAt')
+        expect(res.body).to.have.property('id' && 'content' && 'createdAt' && 'published')
         expect(res.body.content).to.be.a('string')
       })
   })
 
-  describe(`Protected endpoints`, () => {
+  describe(`Protected endpoints w/o auth`, () => {
     it(`responds 'unauthorized' when POST-ing and not signed in via Okta`, () => {
       return supertest(app)
         .post('/api/blogpost')
