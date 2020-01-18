@@ -5,5 +5,5 @@ describe('Contact endpoints', () => {
         return supertest(app)
             .post('/api/contact')
             .expect(200)
-    })
+    }).timeout(3500);
 })

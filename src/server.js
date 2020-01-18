@@ -1,7 +1,7 @@
 const app = require('./app');
-const database = require('./database');
+const sequelize = require('./database');
 const { PORT } = require('./config');
 
-database
+sequelize
     .sync({ force: false })
     .then(app.listen(PORT))

@@ -4,15 +4,16 @@ const app = require('./app');
 const authentication = require('./middleware/okta-auth');
 const sanitizer = require('./middleware/html-sanitizer');
 const { NODE_ENV, DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD } = require('./config');
+const blogpostModel = require('../src/models/blogposts');
 
-let database
+let sequelize
 
 // in production environment DATABASE_URL is an env-var provided by host service
 // in local environment it must be set to an env-var equal to the database name
 
 if (NODE_ENV == 'production') {
     let match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
-    database = new Sequelize(match[5], match[1], match[2], { 
+    sequelize = new Sequelize(match[5], match[1], match[2], { 
         dialect: 'postgres',
         protocol: 'postgres',
         port: match[4],
@@ -23,18 +24,15 @@ if (NODE_ENV == 'production') {
         },
     });
 } else {
-    database = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres' });
+    sequelize = new Sequelize(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD, { dialect: 'postgres', logging: false });
 }
 
 // define blogpost model
-const blogposts = database.define('blogposts', {
-    content: Sequelize.TEXT,
-    published: Sequelize.BOOLEAN,
-})
+const blogposts = blogpostModel(sequelize, Sequelize)
 
 finale.initialize({
     app: app,
-    sequelize: database
+    sequelize: sequelize
 });
 
 // build REST resource
@@ -65,4 +63,4 @@ blogpostsResource.update.auth((req, res, context) => authenticationPromise(req, 
 // sanitization of html from client prior to storage in DB
 blogpostsResource.create.write.before((req, res, context) => sanitizer(req, res, context))
 
-module.exports = database
+module.exports = sequelize
