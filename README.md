@@ -12,7 +12,7 @@ first foray into mocking and stubbing dependencies.
 
 ## Technologies
 
-* Node.js 12
+* Node.js
 * Express
 * PostgreSQL
 * Sequelize
