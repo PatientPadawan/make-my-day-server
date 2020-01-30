@@ -1,5 +1,5 @@
-const OktaJwtVerifier = require('@okta/jwt-verifier')
-const { ISSUER, CLIENT_ID } = require('../config')
+const OktaJwtVerifier = require('@okta/jwt-verifier');
+const { ISSUER, CLIENT_ID } = require('../config');
 
 const oktaJwtVerifier = new OktaJwtVerifier({
   issuer: ISSUER,
@@ -31,4 +31,4 @@ function authenticationRequired(req, res, next) {
     });
 }
 
-module.exports = authenticationRequired
+module.exports = authenticationRequired;
