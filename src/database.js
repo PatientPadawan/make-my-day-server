@@ -12,7 +12,7 @@ let sequelize
 // in local environment it must be set to an env-var equal to the database name
 
 if (NODE_ENV == 'production') {
-    let match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+    const match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
     sequelize = new Sequelize(match[5], match[1], match[2], { 
         dialect: 'postgres',
         protocol: 'postgres',
@@ -20,7 +20,7 @@ if (NODE_ENV == 'production') {
         host: match[3],
         logging: false,
         dialectOptions: {
-            ssl: true
+            ssl: true,
         },
     });
 } else {
